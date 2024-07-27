@@ -125,6 +125,24 @@ If you've not come across yaml files yet, yaml stands for 'yet another markup la
 
 I prepared the following [zowe.yaml](https://github.com/zeditor01/zowetools/blob/main/code/zowe.yaml) file for my system. ***Hint: right mouse click + open link in new tab.***
 
+Note the following parameters
+
+setup-dataset section
+* line 43 provides the HLQ where the ZOWE datasets will be installed later on using the 'ZWE INSTALL' script
+* line 46 specifies your chosen proclib where the startup procedures will be created
+* line 49 specifies your chose parmlib for plugins
+* line 56 specifies the PDS to create the customisation JCL members in
+* line 58 specifies the loadlib from the chosen installation method (convenience build in my case)
+* line 60 specifies the APF-authorised loadlib from the chosen installation method (convenience build in my case)
+* line 63 specifies the APF authorized LOADLIB for Zowe ZIS Plugins from the chosen installation method (convenience build in my case)
+
+setup-security section (needs to be filled in to use RACF and RACF keyrings)
+* line 69 specifies that we will use RACF security. This is an opensource product, and prepares security configurations for multiple security products)
+* line 71 - 77 specifies the RACF groups to create and use (I used ZWEADMIN for all three groups)
+* lines 81 and 83 specifies the user for the main Zowe task (ZWESVUSR) and for the ZIS server (ZWESIUSR)
+* lines 85 - 91 specifies the started task names ZWESLSTC (main server) ZWESISTC (zis server) and ZWESASTC (zis auxilliary server)
+
+
 
 ## 6. Running the 'ZWE INSTALL' Script
 
