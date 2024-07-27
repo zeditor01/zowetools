@@ -57,6 +57,7 @@ The challenges in installing UMS are primarily associated with RACF certificates
 
 ![ums_jwt](/images/ums_jwt.jpg)
 
+UMS and ZOWE do provide support for MFA tokens, documented [here](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=zos-credential-management-by-zowe-jwt-tokens), but that is outside the scope of this worked example.
 
 ## 4. Installing the ZOWE product
 
