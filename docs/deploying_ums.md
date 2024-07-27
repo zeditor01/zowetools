@@ -1,10 +1,10 @@
 # Deploying UMS
 
-This document is an audit trail of deploying ZOWE V2.17
+This document is an audit trail of deploying UMS V1.2
 
  ***Contents***
 
-1. Links to ZOWE Documentation
+1. Links to UMS Documentation
 2. Pre-Requisite Software
 3. Planning the Deployment
 4. Installing the ZOWE product
