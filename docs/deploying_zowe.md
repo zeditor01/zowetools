@@ -345,8 +345,8 @@ Now, Open a Browser Window to logon to ZOWE
 https://s0w1.dal-ebis.ihost.com:7554/zlux/ui/v1
 ```
 
+![zowe_logon](/images/zowe7556.JPG)
 
-![zowe_logon](/images/zowe7554.JPG)
 
 ## 10. Using ZOWE
 
@@ -356,7 +356,7 @@ ZOWE has a number of standard utilities, includind
 * Dataset Browser
 * 3270 emulator
 
-![zowe_services](/images/zowe7556.JPG)
+![zowe_services](/images/zowe7554.JPG)
 
 These will be augmented as we install additional plugins
 
