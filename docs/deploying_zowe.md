@@ -112,7 +112,10 @@ Not covered at this point, because my Db2 tools only need the Server Side compon
 
 ## 5. Preparing the zowe.yaml file of parameters
 
-The entire Zowe deployment is defined by the zowe.yaml file.
+The entire Zowe deployment is defined by the zowe.yaml file. This configuration file is used by
+1. the ZWE INSTALL script to create the ZOWE installation datasets
+2. the ZWE INIT script to customise the ZOWE instance
+3. at Zowe runtime
 
 If you've not come across yaml files yet, yaml stands for 'yet another markup language'. The zowe.yaml file is documented [here](https://docs.zowe.org/stable/appendix/zowe-yaml-configuration/). It has 6 sections
 
@@ -142,6 +145,40 @@ setup-security section (needs to be filled in to use RACF and RACF keyrings)
 * lines 81 and 83 specifies the user for the main Zowe task (ZWESVUSR) and for the ZIS server (ZWESIUSR)
 * lines 85 - 91 specifies the started task names ZWESLSTC (main server) ZWESISTC (zis server) and ZWESASTC (zis auxilliary server)
 
+certificate section. The example zowe.yaml file provides templates for 5 different certificate configurations. I chose scenario 3 - Zowe generated z/OS Keyring with Zowe generated certificates.
+* line 180 specifies that I wish to use a RACK keyring to hold certificates
+* line 185 specifies the Keyring name (ZoweKeyring)
+* line 188 specifies the label of my certificate
+* line 190 specifies the label of my CA certificate
+* line 193 - 200 specifies options distinguished name values
+* line 202 ensures that the certificate won't expire until well after i retire
+* line 208 and 210 specify the hostname (s0w1.dal-ebis.ihost.com) and IP address (192.168.1.171) for my z/OS system
+
+cacheing service section
+line 259 - 256 specifies to use Non-RLS VSAM for the cacheing service
+
+runtime directories
+* line 282 specifies the runtimeDirectory: "/usr/lpp/zwe/zwe217"
+* line 286 specifies the logDirectory: /global/zowe/logs
+* line 290 specifies the workspaceDirectory: /global/zowe/workspace
+* line 294 specifies the extensions directory, where plugins will be linked: /global/zowe/extensions
+
+ports
+* line 364 specifies the port that Zowe listens for browser connections on
+
+generated certificates: Leave this section blank. It will be updated during the 'ZWE INIT' Script
+* line 396 - 420 specify the RACF keystore and truststore to be used for certificates
+
+java
+* line 447 specifies the path to Java 8. Note that Zowe V2.18 depends on Java 8 for the install, but can run with current Java 17.
+
+nodeJS
+* line 462 specifies the path to nodeJS
+
+z/OSMF
+* lines 471 - 477 specify the connection details for z/OSMF
+  
+I left everything else from the example zowe.yaml file to default.
 
 
 ## 6. Running the 'ZWE INSTALL' Script
