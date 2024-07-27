@@ -106,6 +106,10 @@ drwxr-xr-x   2 OMVSKERN SYS1        8192 May 23 12:28 schemas
 -rw-r-----   1 OMVSKERN SYS1     533836800 Jul  1 19:30 zowe-2.16.0.pax
 ```
 
+This matches the file structure described by the Zowe documentation
+
+![zowe_directory](/images/zowedir.JPG)
+
 ### 4.2 Client Side components
 
 Not covered at this point, because my Db2 tools only need the Server Side component. I will update this guide later when I deploy the CLient Side components.
@@ -342,6 +346,8 @@ https://s0w1.dal-ebis.ihost.com:7554/zlux/ui/v1
 ```
 
 
+![zowe_logon](/images/zowe7554.JPG)
+
 ## 10. Using ZOWE
 
 ZOWE has a number of standard utilities, includind
@@ -349,6 +355,8 @@ ZOWE has a number of standard utilities, includind
 * JES Explorer
 * Dataset Browser
 * 3270 emulator
+
+![zowe_services](/images/zowe7556.JPG)
 
 These will be augmented as we install additional plugins
 
