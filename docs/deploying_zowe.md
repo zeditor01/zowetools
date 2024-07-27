@@ -123,7 +123,7 @@ If you've not come across yaml files yet, yaml stands for 'yet another markup la
 5. components (Defines detailed configurations for each Zowe component or extension)
 6. haInstances (Defines customized configurations for each High Availability (HA) instance)
 
-I prepared the following zowe.yaml file for my system.
+I prepared the following [zowe.yaml](https://github.com/zeditor01/zowetools/blob/main/code/zowe.yaml) file for my system.
 
 
 ## 6. Running the 'ZWE INSTALL' Script
