@@ -112,6 +112,19 @@ Not covered at this point, because my Db2 tools only need the Server Side compon
 
 ## 5. Preparing the zowe.yaml file of parameters
 
+The entire Zowe deployment is defined by the zowe.yaml file.
+
+If you've not come across yaml files yet, yaml stands for 'yet another markup language'. The zowe.yaml file is documented [here](https://docs.zowe.org/stable/appendix/zowe-yaml-configuration/). It has 6 sections
+
+1. zowe (Defines global configurations specific to Zowe, including default values)
+2. java (Defines Java configurations used by Zowe components)
+3. node (Defines node.js configurations used by Zowe components)
+4. zOSMF (Tells Zowe your z/OSMF configurations)
+5. components (Defines detailed configurations for each Zowe component or extension)
+6. haInstances (Defines customized configurations for each High Availability (HA) instance)
+
+I prepared the following zowe.yaml file for my system.
+
 
 ## 6. Running the 'ZWE INSTALL' Script
 
