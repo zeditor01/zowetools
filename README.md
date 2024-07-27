@@ -2,6 +2,8 @@
 
 This github repository contains worked examples of deploying zowe, and tools that plugin to zowe.
 
+Zowe is important and exciting because it brings Web-based user interfaces and contemporary devsecops practices to z/OS, so that IT specialists from other platforms can easily work with z/OS.
+
 Zowe is am opensource framework for z/OS that offers multiple enhancements, that provides a modern, productive alternative to traditional 3270 terminal interfaces.
 ZOWE consists of
 * A web-based user interface (Zowe App Framework)
