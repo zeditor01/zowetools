@@ -15,7 +15,7 @@ UMS provides common services that are used by other tools, such as
 
 The knowledge center illustrates the relationship between UMS and ZOWE as follows
 
-![ums_zowe](/images/ums_arch.JPG)
+![ums_arch](/images/ums_arch.jpg)
 
  ***Contents***
 
