@@ -12,6 +12,8 @@ Zowe is highly extensible. Users and vendors can develop plugins, extensions, an
 
 It provides a bridge between traditional z/OS environments and contemporary development approaches, enabling organizations to leverage their mainframe investments more effectively while adapting to changing technology landscapes.
 
+The home of the zowe website, with documentation and downloads is at [www.zowe.org](https://www.zowe.org/)
+
 ## Contents
 
 1. [Deploying ZOWE](https://github.com/zeditor01/zowetools/blob/main/docs/deploying_zowe.md)
