@@ -53,7 +53,7 @@ UMS installation comprises
 5. Execute those jobs
 6. Start Zowe, with references to UMS
 
-The challenges in installing UMS are primarily associated with RACF certificates and permissions and userids and integration points with ZOWE. It is worth taking a moment to understand the authentication flows for UMS, as shown by the diagram below from the knowledge center.
+The challenges in installing UMS are primarily associated with RACF certificates and permissions and userids and integration points with ZOWE. It is worth taking a moment to understand the authentication flows for UMS, as shown by the diagram below from the [knowledge center](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=zos-credential-management-by-ums-jwt-tokens).
 
 ![ums_jwt](/images/ums_jwt.jpg)
 
