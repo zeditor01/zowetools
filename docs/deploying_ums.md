@@ -145,7 +145,7 @@ Data Set Names / Objects                       Volume
 
 There is a ZFS filesystem that I mounted permenantly in PARMLIB as follows
 ```                               
-MOUNT FILESYSTEM('UMS.OMVS.SIZPROOT')            
+MOUNT FILESYSTEM('IZP.OMVS.SIZPROOT')            
       TYPE(ZFS)                                  
       MODE(RDWR)                                 
       NOAUTOMOVE                                 
