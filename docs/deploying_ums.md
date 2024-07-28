@@ -177,9 +177,31 @@ drwxrwxr-x   4 OMVSKERN OMVSGRP     8192 Nov 28  2022 zos-newton-security
 drwxr-xr-x   4 OMVSKERN OMVSGRP     8192 Sep 21  2023 zss-data-provider
 -rwxrwxr-x   2 OMVSKERN OMVSGRP  1193520 Jun 13 05:25 zss-data-provider.pax
 ```
-      
 
-## 5. Running the 'ZWE INSTALL' Script
+Check the UMS documentation for SMPE tasks [here](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=begin-performing-smpe-installation-tasks)
+
+UMS Zowe plug-ins require Program Control authorization. In order to tag the files with this bit, the SMP/E install user requires BPX.FILEATTR.PROGCTL permission on the system.
+
+```
+extattr +p */zssServer/lib/*
+```
+
+So, I opened an ssh terminal, and navigated to the ```components.izp.runtimeDirectory``` directory, and executed the commad
+
+```
+IBMUSER:/Z31A/usr/lpp/IBM/izp/v1r2m0/bin: >pwd
+/Z31A/usr/lpp/IBM/izp/v1r2m0/bin
+IBMUSER:/Z31A/usr/lpp/IBM/izp/v1r2m0/bin: >extattr +p */zssServer/lib/*
+IBMUSER:/Z31A/usr/lpp/IBM/izp/v1r2m0/bin: >
+```
+
+
+## 5. Post-SMPE Installation of UMS
+
+The [UMS Knowledgecenter}(https://www.ibm.com/docs/en/umsfz/1.2.0?topic=installation-post-smpe-ums) does a pretty good job of explaining the customisation steps for UMS, including the overview of the workflow
+
+![ums_workflow](/images/ums_workflow.jpg)
+
 
 
 ## 6. Running the 'ZWE INIT' Script
