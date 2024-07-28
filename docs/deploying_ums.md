@@ -291,6 +291,7 @@ Stop all ZWE* address spaces from SDSF
 
 ### 5.6 Edit ZWEYAML
 
+The original ZWEYAML sample file, with comments, can be viewed [here](https://github.com/zeditor01/zowetools/blob/main/code/ORIGYAML.TXT)
 
 My ZWEYAML file can be viewed [here](https://github.com/zeditor01/zowetools/blob/main/code/ZWEYAML.TXT)
 
