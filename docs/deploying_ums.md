@@ -219,11 +219,66 @@ The [UMS Knowledgecenter}(https://www.ibm.com/docs/en/umsfz/1.2.0?topic=installa
 
 ### 5.1 collecting Required Parameters
 
+Refer to the documentation for [collect_params](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=ums-step-1-collecting-required-parameters#izp_ig_con_installing__USS_Folder)
+
+The UMS installation script uses the PARMLIB(ZWEYAML) member that is created by IZPCPYML. For details of the IZPCPYML JCL and the PARMLIB member ZWEYAML, see Step 2: Installing Unified Management Server. For the notation of ZWEYAML parameters that are referred to in the table, see YAML format.
+
+* Item 1: Prepare a DBA user ID and ensure its privileges
+* Item 2: Identify the UMS z/OS UNIX System Services directories
+* Item 3: Confirm the location of Zowe configuration YAML file
+* Item 4: Validate Integrated Cryptographic Service Facility (ICSF)
+* Item 5: Determine locations for UMS data sets
+
+JCL to prepare a DBA userid
+```
+//IBMUSERR JOB (ACCOUNT),'NEALE ARMSTRONG',NOTIFY=&SYSUID,
+// MSGCLASS=H,CLASS=A,MSGLEVEL=(1,1),REGION=0M            
+//S1       EXEC PGM=IKJEFT01                                                  
+//SYSTSPRT DD SYSOUT=*                                    
+//SYSPRINT DD SYSOUT=*                                    
+//SYSTSIN  DD *                                           
+ADDUSER IZPDBA1 NAME('IZPDBA1')     +                     
+  OMVS(AUTOUID HOME('/u/izpdba1')   +                     
+  PROGRAM('/bin/sh')) DFLTGRP(SYS1) NOPASSWORD            
+/*                                                        
+```
+
+
+
+### DBA ID
+When you plan to use a protected user as the DBA user ID and client authentication with user mapping for the DBA user, you need to prepare a key ring and a client certificate for the DBA user ID. omvs segment + sysadm privilege. authenticaton either bu uid & encrypted pwd token, or by certificate as covered [here](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=begin-setting-up-dba-user-unified-management-server)
+
+### USS Directories
+
+You must identify the USS directory where UMS is installed. 
+Note that this is the SMP/E directory (/usr/lpp/IBM/izp/v1r2m0/bin) which is already installed . 
+This directory will be referred to as components.izp.runtimeDirectory in the rest of this document. 
+
+The UMS started task ID is same as the Zowe started task ID. 
+The ID must have read/write access to the directory that will be specified by the parameter components.izp.workspaceDirectory in the member ZWEYAML of the UMS PARMLIB. 
+This directory and its sub directories will be used as the UMS workspace where UMS files to be installed, added, or updated will be placed. 
+
+### zowe YAML file
+Confirm in which USS directory the Zowe configuration YAML file (zowe.yaml) for the Zowe instance to be used for the UMS server installation is located. (/usr/lpp/zwe/zowe/zowe.yaml)
+The zowe.yaml file location will be specified in the IZPGENER JCL to be used in the UMS server installation. 
+
+### ICSF
+
+RACF Keyrings and/or ICSF
+
+### Datasets
+* HLQ for UMS data sets. (UMS.IZP)
+* PARMLIB (UMS needs a partitioned dataset to store its parameter files. There will be a main UMS PARMLIB member called ZWEYAML and additional PARMLIB members for each installed experience.)
+* JCLLIB (UMS creates a number of JCL jobs from a template that is installed by SMP/E based on the values in your PARMLIB.)
+
+
    
 ### 5.2 Stopping ZOWE and ZSS
 
+Stop all ZWE* address spaces from SDSF
 
 ### 5.3 Copy SIZPSAMP
+
 
 
 ### 5.4 IZPALOPL
