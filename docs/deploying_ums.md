@@ -292,6 +292,8 @@ Stop all ZWE* address spaces from SDSF
 ### 5.6 Edit ZWEYAML
 
 
+My ZWEYAML file can be viewed [here](https://github.com/zeditor01/zowetools/blob/main/code/ZWEYAML.TXT)
+
 ### 5.7 IZPGENER
 
 
