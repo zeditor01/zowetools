@@ -273,6 +273,26 @@ RACF Keyrings and/or ICSF
 * PARMLIB (UMS needs a partitioned dataset to store its parameter files. There will be a main UMS PARMLIB member called ZWEYAML and additional PARMLIB members for each installed experience.)
 * JCLLIB (UMS creates a number of JCL jobs from a template that is installed by SMP/E based on the values in your PARMLIB.)
 
+### Other Notes
+
+Identify the UMS z/OS UNIX System Services folder
+
+/usr/lpp/IBM/izp/v1r2m0/bin
+
+/usr/lpp/zwe/zwe217/zowe.yaml 
+
+/usr/lpp/IBM/afx/v1r2m0/bin	AFX.OMVS.SAFXROOT
+
+Validate Integrated Cryptographic Service Facility (ICSF)
+Determine locations for UMS data sets
+Identify users who will need access to UMS
+
+
+***STOP. Get your mind around Collecting Required Paramaters before doing the rest of the stuff!***
+
+***STOP. Get your mind around Collecting Required Paramaters before doing the rest of the stuff!***
+
+***STOP. Get your mind around Collecting Required Paramaters before doing the rest of the stuff!***
 
    
 ### 5.2 Stopping ZOWE and ZSS
@@ -281,45 +301,330 @@ Stop all ZWE* address spaces from SDSF
 
 ### 5.3 Copy SIZPSAMP
 
+Allocate IZP.SAMPLIB as a PDS.
 
+Copy IZP.SIZPSAMP(*) to IZP.SAMPLIB 
+
+IZP.SAMPLIB Contains members below
+```
+IZPALOPL
+IZPCPYML
+IZPCPYM2
+IZPGENER
+IZPMIGRA
+IZPSYNCY
+```
 
 ### 5.4 IZPALOPL
 
+Execute IZP.SAMPLIB(IZPLOPL) - allocate new parmlib "IZP.PARMLIB"
+```
+//IZPALOPL EXEC PGM=IEFBR14                   
+//ALLOC    DD   DSN=IZP.PARMLIB,              
+//         DISP=(NEW,CATLG),                  
+//         UNIT=SYSALLDA,                     
+//         SPACE=(TRK,(20,5,10)),             
+//         DCB=(RECFM=FB,LRECL=256,BLKSIZE=0),
+//         DSNTYPE=LIBRARY                    
+//*                                           
+```
 
 ### 5.5 IZPCPYML
 
+This job just copies DSN=IZP.SIZPPARM(IZPYAML) to IZP.PARMLIB(ZWEYAML)
+
+```
+//YAML2MVS EXEC PGM=IKJEFT01                                   
+//*                                                            
+//* Replace {components.izp.dataset.parmlib} with your desired 
+//* PARMLIB location.                                          
+//* Replace {components.izp.dataset.runtimeHlq} with the HLQ   
+//* at which the SMP/E components were installed.              
+//*                                                            
+//IN       DD DSN=IZP.SIZPPARM(IZPYAML),                       
+//            DISP=SHR                                         
+//OUT      DD DSN=IZP.PARMLIB(ZWEYAML),                        
+//            DISP=SHR                                         
+//SYSTSPRT DD SYSOUT=*                                         
+//SYSTSIN  DD *                                                
+OCOPY INDD(IN) OUTDD(OUT) TEXT                                 
+/*                                                             
+```
 
 ### 5.6 Edit ZWEYAML
+
+This is the crux of the deployment.
 
 The original ZWEYAML sample file, with comments, can be viewed [here](https://github.com/zeditor01/zowetools/blob/main/code/ORIGYAML.TXT)
 
 My ZWEYAML file can be viewed [here](https://github.com/zeditor01/zowetools/blob/main/code/ZWEYAML.TXT)
 
+
+
 ### 5.7 IZPGENER
 
+This job generates a critical environment definition file and the customisation JCLS
+
+It generates IZP.ENVIRON
+```
+IZP_ZOWE_RUNTIME="/usr/lpp/zwe/zwe217"                                                                                         
+IZP_SCHEMA_CHAIN="/usr/lpp/IBM/izp/v1r2m0/bin/ums/izp-schema.json:/usr/lpp/zwe/zwe217/schemas/zowe-yaml-schema.json:/usr/lpp/zwe/zwe217/schemas/server-common.json"
+IZP_CONFIG_CHAIN="PARMLIB(IZP.PARMLIB):FILE(/usr/lpp/zwe/zwe217/zowe.yaml)"
+```                                          
+
+It also generates the customisation JCLs in IZP.JCLLIB 
+```
+IZPA1   
+IZPA1V  
+IZPA2   
+IZPA2V  
+IZPA3   
+IZPA3V  
+IZPB0R  
+IZPB0VR 
+IZPB1R  
+IZPB1VR 
+IZPB2R  
+IZPB2VR 
+IZPB3R  
+IZPB3VR 
+IZPB4R  
+IZPB4VR 
+IZPC1R  
+IZPC1VR 
+IZPC2R  
+IZPC2VR 
+IZPD1R  
+IZPD1VR 
+IZPD2R  
+IZPD2VR 
+IZPD3R  
+IZPD3VR 
+IZPD4R  
+IZPD4VR 
+IZPD5R  
+IZPD5VR 
+IZPD6R  
+IZPD6VR 
+IZPD7R  
+IZPD7VR 
+IZPEXPIN
+IZPIPLUG
+IZPSTEPL
+IZPUSRMD
+```
 
 ### 5.8 IZPA3
+
+IZPA1 and IZPA2 are not needed if useSAFOnly=true. (They allocate TEAMLIST and USERLIST datasets, which are no longer used if we always use SAF for authentication and authorisation controls.
+
+Run IZPA3, which allocates a dataset (IZP.DBA.ENCRYPT) to dba encryption data
+
+```
+//IZPA3    EXEC PGM=IEFBR14                          
+//ALLOC    DD   DSN=IZP.DBA.ENCRYPT,                 
+//         DISP=(NEW,CATLG),                         
+//         UNIT=SYSALLDA,                            
+//         SPACE=(TRK,(20,5)),                       
+//         DCB=(DSORG=PS,RECFM=FB,LRECL=80,BLKSIZE=0)
+```
 
 
 ### 5.9 Execute Selected  ESM JCLs
 
 
+Execute the following ESM JCLs
+
+IZPB1R
+IZPB2R 
+IZPD1R 
+IZPD2R
+IZPD3R
+IZPD5R
+IZPD7R 
+IZPSTEPL
+
+IZPUSRMD ???  NO
+
+
+
+
 ### 5.10 Encrypt DBA credentials
 
+Run ```izp-encrypt-dba.sh```
+
+Open a terminal session, and run this script, supplying the HLQ as an input parameter, to encrypt the token.
+
+```
+IBMUSER:/Z31A/usr/lpp/IBM/izp/v1r2m0/bin/ums/opt/bin: >./izp-encrypt-dba.sh IZP
+IZPPI0079I - Start of izp-encrypt-dba.sh
+IZP Credential Encryption Utility
+Using PKCS #11 token label: IZPTOK
+Using path to PKCS #11 library file: /usr/lpp/pkcs11/lib/csnpca64.so
+Using database administrator username: IZPDBA1
+Enter the password for the database administrator:
+
+Reenter the password:
+
+Supplied Credentials encrypted
+IZPPI0080I - End of izp-encrypt-dba.sh. Return code 0
+```
+
+Take a peek in IZP.DBA.ENCRYPT for fun
+
+```
+********************************* Top of Data **********************************
+/..<.î:ÄÑ.ËÄç ÎÄåÈ¦Ä:áÌ<.ÌøßÑ.¦Ä..Ïß.á.+ä.:ÂÏ...................................
+Â..ëîøéîá.<.....................................................................
+Ä....ÂÑ>/Ê`.@...................................................................
+....Ñ ãäÏÀ..åÑìêê_ÈñÀÉ: ........................................................
+À....ÂÑ>/Ê`.@...................................................................
+..(ÏîÃã|...¦%.ê.`ñáÏ<.:é........................................................
+******************************** Bottom of Data ********************************
+```
 
 ### 5.11 IZPIPLUG
 
+Run IZPIPLUG job
+
+```
+ ------------------------------------------------------------------------------------------------------------------------------
+ SDSF OUTPUT DISPLAY IZPCUST1 JOB00983  DSID   102 LINE 0       COLS 02- 128                                                   
+ COMMAND INPUT ===>                                            SCROLL ===> CSR                                                 
+********************************* TOP OF DATA ******************************************************************************** 
+IZPPI0079I - Start of izp-install-plugins.sh.                                                                                  
+/tmp/.zweenv-1201/zwe-parmlib-3724 -> IZP.PARMLIB(ZWEYAML): text                                                               
+Temporary directory '/tmp/.zweenv-1201' created.                                                                               
+Zowe will remove it on success, but if zwe exits with a non-zero code manual cleanup would be needed.                          
+bos extend currSize=0x0 dataSize=0x1836 chunk=0x1000 extend=0x1836                                                             
+Installing file or folder=/usr/lpp/IBM/izp/v1r2m0/bin                                                                          
+Install bin                                                                                                                    
+Process ums/opt/bin/izp-install.sh defined in manifest commands.install:                                                       
+2024-07-21 01:36:40 <ZWELS:67175104> IBMUSER INFO (zwe-components-install-process-hook) - commands.install output from izp is: 
+                                                                                                                               
+Successfully installed ZIS plugin: zos-newton-db2ifi                                                                           
+Successfully installed ZIS plugin: zos-newton-discovery                                                                        
+Successfully installed ZIS plugin: zos-newton-registry                                                                         
+Successfully installed ZIS plugin: zos-newton-security                                                                         
+Successfully installed ZIS plugin: zss-data-provider                                                                           
+Successfully installed ZIS plugin: cidb                                                                                        
+Successfully installed ZIS plugin: ums-security                                                                                
+Successfully installed ZIS plugin: zos-newton-daj                                                                              
+Successfully installed ZIS plugin: hlv-discovery                                                                               
+- update zowe config /tmp/.zweenv-1201/.zowe-merged.yaml, key: "components.izp.enabled" with value: true                       
+  * Success                                                                                                                    
+Writing temp file for PARMLIB update. Command= cp -v "/tmp/.zweenv-1201/zwe-parmlib-3724" "//'IZP.PARMLIB(ZWEYAML)'"           
+bos extend currSize=0x0 dataSize=0x1836 chunk=0x1000 extend=0x1836                                                             
+IZPPI0080I - End of izp-install-plugins.sh. Return code 0                                                                      
+******************************** BOTTOM OF DATA ******************************************************************************
+```
+    
 
 ### 5.12 IZPEXPIN
+
+Submit IZPEXPIN to install any defined experiences. ( In this case, Db2 Admin Experience ).
+
+```
+ SDSF OUTPUT DISPLAY IZPCUST1 JOB00989  DSID   102 LINE 0       COLS 02- 128                                                   
+ COMMAND INPUT ===>                                            SCROLL ===> CSR                                                 
+********************************* TOP OF DATA ******************************************************************************** 
+IZPPI0079I - Start of izp-cp-exp.sh                                                                                            
+IZPPI0121I - Updating /tmp/izp-merge-16843471 with new elements from /usr/lpp/IBM/afx/v1r2m0/bin/admin-fdn-db2/var/conf/configu
+IZPPI0031I - File copy status: OK - IZPDB2PM                                                                                   
+IZPPI0121I - Updating /tmp/izp-merge-16843471 with new elements from /usr/lpp/IBM/afx/v1r2m0/bin/admin-fdn-db2/var/conf/configu
+IZPPI0031I - File copy status: OK - IZPDAFPM                                                                                   
+IZPPI0049I - Experience post-installation status: /usr/lpp/IBM/afx/v1r2m0/bin/admin-fdn-db2 OK                                 
+alloc da('IZP.SAFXDBRM') dsorg(po) dsntype(library) tracks space(10,5) lrecl(80) blksize(0) recfm(f,b) new catalog             
+alloc da('IZP.SAFXLLIB') dsorg(po) dsntype(library) tracks space(100,10) lrecl(0) blksize(32760) recfm(u) new catalog          
+alloc da('IZP.SAFXSAMP') dsorg(po) dsntype(library) tracks space(10,5) lrecl(80) blksize(0) recfm(f,b) new catalog             
+IZPPI0049I - Experience post-installation status: /usr/lpp/IBM/afx/v1r2m0/bin/admin-fdn-db2 OK                                 
+IZPPI0080I - End of izp-cp-exp.sh. Return code 0                                                                               
+******************************** BOTTOM OF DATA ****************************************************************************** 
+```
 
 
 ### 5.13 Edit ZOWE STC JCL
 
+The Started Task JCL must identify both the UMS ZWEYAML and the ZOWE zowe.yaml
+
+```
+//ZWESLSTC  PROC RGN=0M,HAINST='__ha_instance_id__'                    
+//********************************************************************/
+//* This program and the accompanying materials are                  */
+//* made available under the terms of the                            */
+//* Eclipse Public License v2.0                                      */
+//* which accompanies this distribution, and is available at         */
+//* https://www.eclipse.org/legal/epl-v20.html                       */
+//*                                                                  */
+//* SPDX-License-Identifier: EPL-2.0                                 */
+//*                                                                  */
+//* Copyright Contributors to the Zowe Project.                      */
+//********************************************************************/
+//*                                                                  */
+//* ZOWE LAUNCHER PROCEDURE                                          */
+//*                                                                  */
+//* NOTE: this procedure is a template, you will need to modify      */
+//*       #zowe_yaml variable to point to your Zowe YAML config      */
+//*       file.                                                      */
+//*                                                                  */
+//* Check https://docs.zowe.org for more details.                    */
+//*                                                                  */
+//********************************************************************/
+//ZWELNCH  EXEC PGM=ZWELNCH,REGION=&RGN,TIME=NOLIMIT,                  
+// PARM='ENVAR(_CEE_ENVFILE=DD:STDENV),POSIX(ON)/&HAINST.'             
+//STEPLIB  DD   DSNAME=ZWE217.SZWEAUTH,                                
+//             DISP=SHR                                                
+//SYSIN    DD  DUMMY                                                   
+//SYSPRINT DD  SYSOUT=*,LRECL=1600                                     
+//SYSERR   DD  SYSOUT=*                                                
+//********************************************************************/
+//*                                                                    
+//* CONFIG= can be either a single path ex.                            
+//*   CONFIG=/my/zowe.yaml                                             
+//*                                                                    
+//* Or a list of FILE() or PARMLIB() and colon : separated paths       
+//*   in the form of                                                   
+//*                                                                    
+//*    +------------ : ------------+                                   
+//*    V                           |                                   
+//* >--+--FILE(ussPath)------------+--><                               
+//*    |                           |                                   
+//*    +--PARMLIB(dsname(member))--+                                   
+//*                                                                    
+//* Example:                                                           
+//*   CONFIG=FILE(/my/long/path/to/1.yaml)\                            
+//*   :PARMLIB(ZOWE.PARMLIB(YAML))                                     
+//*                                                                    
+//* In the above case, the \ is used as a line continuation.           
+//*                                                                    
+//* When using a list, files on left override properties               
+//* from files to their right.                                         
+//* Typically the right-most file should be the Zowe default yaml.     
+//*                                                                    
+//* Note: All PARMLIB() entries must all have the same member name.    
+//*                                                                    
+//********************************************************************/
+//STDENV   DD  *                                                       
+_CEE_ENVFILE_CONTINUATION=\                                            
+_CEE_RUNOPTS=HEAPPOOLS(OFF),HEAPPOOLS64(OFF)                           
+_EDC_UMASK_DFLT=0002                                                   
+CONFIG=PARMLIB(IZP.PARMLIB(ZWEYAML))\                                  
+:FILE(/usr/lpp/zwe/zwe217/zowe.yaml)                                   
+/*                                                                     
+```
 
 ### 5.14 Start ZSS
 
+Enter z/OS Console command  ```S ZWESISTC,REUSASID=YES```  
 
 ### 5.15 Start ZOWE
 
+Enter z/OS Console command ```S ZWESLSTC```
 
-## 6. Starting ZOWE with UMS
+## 6. Validate ZOWE with UMS
+
+
+and hope to avoid the timeouts
+
+
+
