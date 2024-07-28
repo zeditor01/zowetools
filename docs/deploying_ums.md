@@ -221,7 +221,7 @@ The [UMS Knowledgecenter}(https://www.ibm.com/docs/en/umsfz/1.2.0?topic=installa
 
 Refer to the documentation for [collect_params](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=ums-step-1-collecting-required-parameters#izp_ig_con_installing__USS_Folder)
 
-The UMS installation script uses the PARMLIB(ZWEYAML) member that is created by IZPCPYML. For details of the IZPCPYML JCL and the PARMLIB member ZWEYAML, see Step 2: Installing Unified Management Server. For the notation of ZWEYAML parameters that are referred to in the table, see YAML format.
+We need to get all the parameters and artefacts ready, so that we can edit the YAML ```IZP.PARMLIB(ZWEYAML)``` for for UMS, and generate and execute the customisation jobs. The items to prepare are as follows
 
 * Item 1: Prepare a DBA user ID and ensure its privileges
 * Item 2: Identify the UMS z/OS UNIX System Services directories
