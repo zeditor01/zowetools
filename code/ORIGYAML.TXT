@@ -1,0 +1,376 @@
+# ZWEYAML: Zowe parameters for IBM Unified Management Server
+
+# Note: not recommended to remove or comment out elements.  Deleting elements
+# can result in unpredictable behavior during upgrades.
+# Comments added may be removed during IZPSYNCY upgrades.
+
+components:
+  izp:
+    #
+    # This is required by Zowe to launch IZP during Zowe startup.
+    # It should always be true.
+    #
+    enabled: true
+    #
+    # Whether or not to set -x to enable shell debugging.
+    # Change only if instructed by IBM customer support.
+    #
+    debugShellScripts: false
+    #
+    # The runtimeDirectory values of the experiences included.
+    # Example:
+    #   experiences:
+    #   - /usr/lpp/IBM/doe/v1r3m0/bin
+    #   - /usr/lpp/IBM/afx/v1r2m0/bin
+    #   - /usr/lpp/IBM/afn/v1r7m0/bin
+    #
+    experiences: []
+    #
+    # The job card that will be used for generated
+    # jobs when submitting IZPGENER.
+    #
+    jobCard:
+      - //IZPCUST1 JOB
+      - //*
+      - //*
+    #
+    # The path where the SMP/E installer places the runtime files. This location
+    # may be read-only so modifications should be done in
+    # {components.izp.workspaceDirectory}.
+    #
+    runtimeDirectory:
+    #
+    # The writable location where Unified Management Server can store files
+    # and other data important to core functionality. This should not be
+    # the same as {components.izp.runtimeDirectory}/ums/var. If you make
+    # your workspace directory inside of your runtime directory, then validation
+    # will fail and you will not be able to proceed with starting the server.
+    #
+    workspaceDirectory:
+    #
+    # If applicable, the path of Unified Management Server v1.1
+    # read/write directory.  This is the value of the IZP_UMS_VARDIR
+    # variable.  It is recommended to not put the same value for
+    # workspaceDirectory above.
+    #
+    migrationDirectory:
+    #
+    # Properties that will interface with your security manager.
+    #
+    security:
+      #
+      # Whether to use SAF (system authorization facility) for all UMS access,
+      # rather than relying upon the User and Team list datasets.
+      #
+      useSAFOnly: false
+      #
+      # The following fields are used for authentication specification
+      #
+      dba:
+        #
+        # The type of authentication that the dba user will use
+        # when connecting to services.
+        #
+        # The options are 'CERTIFICATE' or 'PASSWORD'.
+        #
+        # CERTIFICATE authentication is currently supported by IMS subsystems
+        # Db2 subsystems must use PASSWORD authentication
+        #
+        defaultAuthenticationMechanism: PASSWORD
+        #
+        # When using CERTIFICATE authentication, this is
+        # the label of the dba user client certificate. This is
+        # the label used to connect a certificate to the key ring.
+        #
+        defaultDbaUserCertificateLabel:
+        #
+        # When using CERTIFICATE authentication, this is
+        # the location of the dba user client certificate
+        # in URL form.
+        #
+        # example: safkeyring://ZWESVUSR/ZoweRing
+        #
+        defaultDbaUserCertificateLocation:
+        #
+        # When using CERTIFICATE authentication, this is
+        # the type of key ring that contains the dba user
+        # client certificate.
+        #
+        # Example: JCERACFKS
+        # Example: JCECCARACFKS
+        #
+        defaultDbaUserCertificateKeystoreType:
+      #
+      # Second qualifier for SAF checks to IZP resources such
+      # as function, role, and team profiles when
+      # useSAFOnly is true.
+      #
+      profileQualifier:
+      #
+      # Encryption using ICSF PKCS#11 services.
+      #
+      pkcs11:
+        #
+        # The user name of dba that goes with the encrypted password.
+        #
+        dbaUser: IZPDBA
+        #
+        # The pkcs#11 token where the secret key material is stored.
+        #
+        token: IZPTOK
+        #
+        # Path to pkcs#11 provider module.
+        #
+        library: /usr/lpp/pkcs11/lib/csnpca64.so
+      #
+      # Used to secure communication over https.
+      #
+      certificate:
+        #
+        # Whether or not Unified Management can use
+        # self-signed certificates.
+        #
+        allowSelfSigned: false
+        #
+        # Contains trust material used by Unified Management Server.
+        #
+        # If you want to specify a specific trust store, then you
+        # should remove the leading # on lines with the following
+        # text.
+        #
+        truststore:
+          #
+          # The path or user and key ring name to a trust store.
+          #
+          # Example: safkeyring:////ZWESVUSR/IZPRING
+          # Example: file://absolute/path/to/a/truststore
+          # Note: Keyring syntax must use four slashes (safkeyring:////)
+          # Two slashes (safkeyring://) will not be recognized.
+          #
+          location:
+          #
+          # The type of trust store that is being used.
+          #
+          # Example: JCERACFKS
+          # Example: JKS
+          # Example: PKCS12
+          #
+          type:
+        #
+        # Contains key material used by Unified Management Server.
+        #
+        keystore:
+          #
+          # The path or user and key ring name to a key store.
+          #
+          # Example: safkeyring:////ZWESVUSR/IZPRING
+          # Example: file://absolute/path/to/a/keystore
+          #
+          location:
+          #
+          # The type of key store that is being used.
+          #
+          # Example: JCERACFKS
+          # Example: JKS
+          # Example: PKCS12
+          #
+          type:
+          #
+          # The name of the alias of the server certificate.
+          #
+          alias:
+      #
+      # Prefix to generic profiles created during installation. The
+      # profiles are used to denote roles.
+      #
+      profilePrefix:
+        # Super Role
+        super: IZP.SUPER
+        # Administrator Role
+        admin: IZP.ADMIN
+      #
+      # Password-less users that will be created during installation.
+      # These users are able to read and write to the user list and
+      # team list data sets on behalf of users with passwords. The zss
+      # server will conditionally impersonate the users below.
+      #
+      # Note: At present these user names may not be changed.
+      #
+      surrogateUser:
+        # Super Role
+        super: IZPSRGSP
+        # Administrator Role
+        admin: IZPSRGAD
+      #
+      # The default group for above users.
+      #
+      surrogateGroup: IZPSRGRP
+    #
+    # Properties that are read by Java to configure the server
+    # when running.
+    #
+    server:
+      #
+      # Comma separated list of enabled tls protocols used
+      # by Unified Management Server as a client and server.
+      #
+      # tlsVersionList: TLSv1.3
+      # tlsVersionList: TLSv1.2
+      #
+      tlsVersionList: TLSv1.2,TLSv1.3
+      #
+      # The desired authentication type for Unified Management Server.
+      #
+      # authType: STANDARD_JWT
+      # authType: MFA_JWT
+      #
+      authType: STANDARD_JWT
+      #
+      # The ports that Unified Management Server will listen on.
+      #
+      port:
+        http: 12023
+        agent: 3444
+        gremlin: 8182
+      #
+      # If nonblank, use instead of zowe.externalDomain[0]
+      # Useful for HA configuration with DVIPA
+      host:
+      #
+      # The log location, FILE, STDOUT (i.e. job output), or BOTH
+      log:
+        destination: BOTH
+        #
+        # Option for debug logging.
+        # When directed by customer support, to include logging for
+        # UMS classes, remove "[]" and put logging lines each on a
+        # line by itself, indented the same as "properties:", and
+        # preceded by a hyphen.  E.g.
+        #
+        # - com.rocketsoft.example.level=FINE
+        #
+        properties: []
+      #
+      # The maximum number of HTTP requests per user.
+      #
+      apiRateCapacityByUser: 600
+      #
+      # The memory to be allocated for Unified Management
+      # Server in megabytes.
+      #
+      memorySize: 16384
+      #
+      # The job code for Unified Management Server jobs. The
+      # jobPrefix associated for a team overrides this value.
+      #
+      jobPrefix: "IZP"
+      failsafeTimeout: 100
+      graphQLTimeout: 300
+      #
+      # How frequently to refresh object discovery for registered
+      # subsystems in hours.
+      #
+      # Min=1
+      # Max=24
+      #
+      objectDiscoveryInterval: 24
+      #
+      # A space separated list of lpar names that you'd like to do
+      # system discovery on.
+      #
+      # allSysnames: SYS1 SYS2 SYS3
+      #
+      allSysnames:
+      #
+      # An array of Java Virtual Machine arguments to pass to the server.
+      # javaArgs:
+      # - -Dcom.rocketsoft.foo=bar
+      #
+      javaArgs: []
+    #
+    # These data sets will be used during installation and run time.
+    # They shouldn't exist unless otherwise specified. The rest will
+    # be created at some point during the configuration process.
+    #
+    dataset:
+      #
+      # The hlq where the smp/e data sets reside.
+      #
+      runtimeHlq: "IZP.SMPE.HLQ"
+      #
+      # The high-level qualifier for miscellaneous data sets
+      # created during runtime and installation.
+      #
+      hlq: "IZP.HLQ"
+      #
+      # The location of your PARMLIB dataset
+      # Use template for recommended value
+      #
+      parmlib: ${{ components.izp.dataset.hlq }}.PARMLIB
+      #
+      # The location for JCL members generated by IZPGENER
+      # Use template for recommended value
+      #
+      jcllib: ${{ components.izp.dataset.hlq }}.JCLLIB
+      #
+      # Load libraries for various parts of Unified Management Server.
+      #
+      loadLibrary:
+        db2: "DSN.VC10.SDSNLOAD"
+        # The data set name where the UMS load library resides.
+        # Optional Parameter
+        # If this value is blank, the default data set (runtimeHlq.SIZPLOAD)
+        # is used. When you move the library,  you need to specify
+        # the data set name here to override the default.
+        izp:
+      #
+      # Contains encrypted password of the dba user in yaml format after
+      # running the dba encryption shell script.
+      #
+      dbaEncryption: "IZP.DBA.ENCRYPT"
+      #
+      # Contains cache of UMS user data.
+      #
+      userList: "IZP.USERLIST"
+      #
+      # Contains cache of UMS team data. This data set should never be modified
+      # manually.
+      #
+      teamList: "IZP.TEAMLIST"
+    #
+    # Contains the paths (uss file path, dataset name, dataset HLQ) to
+    # find other Db2 tools product's yaml files.
+    #
+    toolsDiscovery:
+      #
+      # default is true
+      #
+      enabled: true
+      #
+      # An array of strings containing the possible locations of a product's yaml
+      # file. Each of these paths will begin with a 3 letter identifier followed
+      # by a colon to assist in the search for the yaml file. The identifiers are
+      # DIR (uss path) and DSN (fully qualified dataset - this includes PDS in which
+      # case the member name must be present).
+      # If enabled is true and discoverySearchPaths is empty then the default search
+      # path is "/usr/lpp"
+      # Example: ["DIR:/usr/lpp/db2tools", "HLQ:BOB.DB2TOOLS", "DSN:ME.DSN.PDS(MEMBER)",
+      #           "DSN:ME.DSN.SEQ"]
+      discoverySearchPaths: []
+    #
+    # Zowe app-specific parameters
+    #
+    zowe:
+      job:
+        #
+        # Suffix for Java program which will be run by UMS.  Default is "IZP"
+        #
+        suffix: IZP
+zowe:
+  # These zowe items are required by the IZP setup.  Do not edit.
+  setup:
+    zis:
+     parmlib:
+       keys:
+         IZP.ZSSP.REG: list
+  useConfigmgr: true
