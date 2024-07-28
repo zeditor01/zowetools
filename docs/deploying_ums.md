@@ -23,12 +23,27 @@ The knowledge center illustrates the relationship between UMS and ZOWE as follow
 2. Pre-Requisite Software
 3. Planning the Deployment
 4. Installing the UMS product
-5. Running the 'ZWE INSTALL' Script
-6. Running the 'ZWE INIT' Script
-7. Starting ZOWE
-8. Logging on to ZOWE
-9. Using ZOWE
-10. ZOWE Automation
+5. Post-SMPE Installation of UMS
+   5.1 collecting Required Parameters
+   5.2 Stopping ZOWE and ZSS
+   5.3 Copy SIZPSAMP
+   5.4 IZPALOPL
+   5.5 IZPCPYML
+   5.6 Edit ZWEYAML
+   5.7 IZPGENER
+   5.8 IZPA3
+   5.9 Execute Selected  ESM JCLs
+   5.10 Encrypt DBA credentials
+   5.11 IZPIPLUG
+   5.12 IZPEXPIN
+   5.13 Edit ZOWE STC JCL
+   5.14 Start ZSS
+   5.15 Start ZOWE
+6. Validate ZOWE with UMS
+
+
+
+
 
 
 ## 1. Links to UMS Documentation
@@ -202,18 +217,49 @@ The [UMS Knowledgecenter}(https://www.ibm.com/docs/en/umsfz/1.2.0?topic=installa
 
 ![ums_workflow](/images/ums_workflow.JPG)
 
+### 5.1 collecting Required Parameters
+
+   
+### 5.2 Stopping ZOWE and ZSS
 
 
-## 6. Running the 'ZWE INIT' Script
+### 5.3 Copy SIZPSAMP
 
 
-## 7. Starting ZOWE
+### 5.4 IZPALOPL
 
 
-## 8. Logging on to ZOWE
+### 5.5 IZPCPYML
 
 
-## 9. Using ZOWE
+### 5.6 Edit ZWEYAML
 
 
-## 10. ZOWE Automation
+### 5.7 IZPGENER
+
+
+### 5.8 IZPA3
+
+
+### 5.9 Execute Selected  ESM JCLs
+
+
+### 5.10 Encrypt DBA credentials
+
+
+### 5.11 IZPIPLUG
+
+
+### 5.12 IZPEXPIN
+
+
+### 5.13 Edit ZOWE STC JCL
+
+
+### 5.14 Start ZSS
+
+
+### 5.15 Start ZOWE
+
+
+## 6. Starting ZOWE with UMS
