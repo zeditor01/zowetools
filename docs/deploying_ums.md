@@ -200,7 +200,7 @@ IBMUSER:/Z31A/usr/lpp/IBM/izp/v1r2m0/bin: >
 
 The [UMS Knowledgecenter}(https://www.ibm.com/docs/en/umsfz/1.2.0?topic=installation-post-smpe-ums) does a pretty good job of explaining the customisation steps for UMS, including the overview of the workflow
 
-![ums_workflow](/images/ums_workflow.jpg)
+![ums_workflow](/images/ums_workflow.JPG)
 
 
 
