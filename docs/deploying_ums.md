@@ -229,6 +229,9 @@ We need to get all the parameters and artefacts ready, so that we can edit the Y
 * Item 4: Validate Integrated Cryptographic Service Facility (ICSF)
 * Item 5: Determine locations for UMS data sets
 
+### 5.1.1 DBA ID
+When you plan to use a protected user (i.e. a user with heightened powers and without tso logon) as the DBA user ID and client authentication with user mapping for the DBA user, you need to prepare a key ring and a client certificate for the DBA user ID. omvs segment + sysadm privilege. authenticaton either bu uid & encrypted pwd token, or by certificate as covered [here](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=begin-setting-up-dba-user-unified-management-server)
+
 JCL to prepare a DBA userid
 ```
 //IBMUSERR JOB (ACCOUNT),'NEALE ARMSTRONG',NOTIFY=&SYSUID,
@@ -245,8 +248,7 @@ ADDUSER IZPDBA1 NAME('IZPDBA1')     +
 
 
 
-### DBA ID
-When you plan to use a protected user as the DBA user ID and client authentication with user mapping for the DBA user, you need to prepare a key ring and a client certificate for the DBA user ID. omvs segment + sysadm privilege. authenticaton either bu uid & encrypted pwd token, or by certificate as covered [here](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=begin-setting-up-dba-user-unified-management-server)
+
 
 ### USS Directories
 
