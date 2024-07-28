@@ -1,0 +1,86 @@
+---                                                                             
+components:                                                                     
+  izp:                                                                          
+    enabled: true                                                               
+    debugShellScripts: false                                                    
+    experiences:                                                                
+    - "/usr/lpp/IBM/afx/v1r2m0/bin"                                             
+    jobCard:                                                                    
+    - "//IZPCUST1 JOB  (UMS),'UMS JOB 01',CLASS=A,MSGCLASS=H,"                  
+    - "//             NOTIFY=&SYSUID,MSGLEVEL=(1,1)"                            
+    - "//********************************************************************"  
+    runtimeDirectory: "/usr/lpp/IBM/izp/v1r2m0/bin"                             
+    workspaceDirectory: "/global/ums"                                           
+    migrationDirectory: null                                                    
+    security:                                                                   
+      useSAFOnly: true                                                          
+      dba:                                                                      
+        defaultAuthenticationMechanism: "PASSWORD"                              
+        defaultDbaUserCertificateLabel: null                                    
+        defaultDbaUserCertificateLocation: null                                 
+        defaultDbaUserCertificateKeystoreType: null                             
+      profileQualifier: null                                                    
+      pkcs11:                                                                   
+        dbaUser: "IZPDBA1"                                                      
+        token: "IZPTOK"                                                         
+        library: "/usr/lpp/pkcs11/lib/csnpca64.so"                              
+      certificate:                                                              
+        allowSelfSigned: true                                                   
+        truststore:                                                             
+          location: "/safkeyring:////ZWESVUSR/ZoweKeyring"                      
+          type: "JCERACFKS"                                                     
+        keystore:                                                               
+          location: "/safkeyring:////ZWESVUSR/ZoweKeyring"                      
+          type: "JCERACFKS"                                                     
+          alias: "zoews0w1"                                                     
+      profilePrefix:                                                            
+        super: "IZP.SUPER"                                                      
+        admin: "IZP.ADMIN"                                                      
+      surrogateUser:                                                            
+        super: "IZPSRGSP"                                                       
+        admin: "IZPSRGAD"                                                       
+      surrogateGroup: "IZPSRGRP"                                                
+    server:                                                                     
+      tlsVersionList: "TLSv1.2,TLSv1.3"                                         
+      authType: "STANDARD_JWT"                                                  
+      port:                                                                     
+        http: 12023                                                             
+        agent: 3444                                                             
+        gremlin: 8182                                                           
+      host: null                                                                
+      log:                                                                      
+        destination: "BOTH"                                                     
+        properties: []                                                          
+      apiRateCapacityByUser: 600                                                
+      memorySize: 16384                                                         
+      jobPrefix: "IZP"                                                          
+      failsafeTimeout: 100                                                      
+      graphQLTimeout: 300                                                       
+      objectDiscoveryInterval: 24                                               
+      allSysnames: null                                                         
+      javaArgs: []                                                              
+    dataset:                                                                    
+      runtimeHlq: "IZP"                                                         
+      hlq: "IZP"                                                                
+      parmlib: "IZP.PARMLIB"                                                    
+      jcllib: "IZP.JCLLIB"                                                      
+      loadLibrary:                                                              
+        db2: "DSND10.SDSNLOAD"                                            
+        izp: null                                                         
+      dbaEncryption: "IZP.DBA.ENCRYPT"                                    
+      userList: "IZP.USERLIST"                                            
+      teamList: "IZP.TEAMLIST"                                            
+    toolsDiscovery:                                                       
+      enabled: true                                                       
+      discoverySearchPaths: []                                            
+    zowe:                                                                 
+      job:                                                                
+        suffix: "IZP"                                                     
+zowe:                                                                     
+  setup:                                                                  
+    zis:                                                                  
+      parmlib:                                                            
+        keys:                                                             
+          IZP.ZSSP.REG: "list"                                            
+  useConfigmgr: true                                                      
+...                                                                       
