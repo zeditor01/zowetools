@@ -32,7 +32,7 @@ components:
         keystore:                                                               
           location: "/safkeyring:////ZWESVUSR/ZoweKeyring"                      
           type: "JCERACFKS"                                                     
-          alias: "zoews0w1"                                                     
+          alias: "zowes0w1"                                                     
       profilePrefix:                                                            
         super: "IZP.SUPER"                                                      
         admin: "IZP.ADMIN"                                                      
